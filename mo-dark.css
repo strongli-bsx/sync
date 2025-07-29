@@ -1,17 +1,19 @@
+/* 基础字体设置，保证标题排版基准 */
 html {
-  font-size: 16px;
+  font-size: 16px; 
 }
 
 html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Consolas", Helvetica, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Hack", Helvetica, "PingFang SC", "Microsoft YaHei", sans-serif;
   text-align: justify;
   overflow-x: hidden;
-  color: #abc0d0;
+  color: #abc0d0; /* 正文文字颜色，标题将与之统一 */
   background-color: #181a1b;
   -webkit-font-smoothing: antialiased;
 }
 
+/* 内容区基础样式（保留原有，确保整体布局） */
 content #write {
   background-color: #181a1b;
   max-width: 90%;
@@ -19,9 +21,107 @@ content #write {
   padding-bottom: 7.5rem;
 }
 
+/* 一级标题：居中、同正文色文字、同色短下划线（短） */
+#write h1 {
+  font-size: 2.5rem; /* 可按需调整大小 */
+  font-weight: normal;
+  text-align: center;
+  color: #abc0d0; /* 与正文同色 */
+  position: relative;
+  margin: 2rem auto 1rem;
+  width: fit-content;
+}
+#write h1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%);
+  width: 300px; /* 短下划线 */
+  height: 2px;
+  background-color: #abc0d0; /* 与文字同色下划线 */
+}
+
+/* 二级标题：左侧同正文色# + 同色文字、同色长下划线贯穿 */
+#write h2 {
+  font-size: 1.8rem;
+  font-weight: normal;
+  color: #abc0d0; /* 与正文同色 */
+  position: relative;
+  padding-left: 0rem; /* 给#符号留空间 */
+  margin: 1.5rem 0;
+}
+
+#write h2::after {
+  content: "";
+  position: absolute;
+  left: 0; /* 从标题最左侧开始 */
+  bottom: 0; /* 与标题底部对齐 */
+  width: 1000px; /* 固定下划线长度为1000px */
+  height: 2px;
+  background-color: #778899; /* 同色下划线 */
+  /* 移除right属性，避免与固定宽度冲突 */
+}
+
+/* 三级标题：左侧同正文色竖线 + 同色文字 */
+#write h3 {
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: #abc0d0; /* 与正文同色 */
+  position: relative;
+  padding-left: 1.2rem;
+  margin: 1.2rem 0;
+}
+#write h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2rem;
+  bottom: 0.2rem;
+  width: 2px;
+  background-color: #abc0d0; /* 同色竖线 */
+}
+
+/* 四级标题：同正文色边框（文字外框）+ 同色文字 */
+#write h4 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: #abc0d0; /* 与正文同色 */
+  display: inline-block;
+  border: 2px solid #abc0d0; /* 同色边框 */
+  padding: 0.2rem 0.5rem;
+  margin: 1rem 0;
+}
+
+/* 五级标题：小字号 + H5 前缀（浅一些的同正文色系，可微调）+ 同色文字 */
+#write h5 {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #abc0d0; /* 与正文同色 */
+  margin: 0.8rem 0;
+}
+#write h5::before {
+  content: "H5 ";
+  color: #8899aa; /* 浅一点的同色系，可根据实际调整 */
+}
+
+/* 六级标题：小字号 + H6 前缀（浅一些的同正文色系，可微调）+ 同色文字 */
+#write h6 {
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: #abc0d0; /* 与正文同色 */
+  margin: 0.6rem 0;
+}
+#write h6::before {
+  content: "H6 ";
+  color: #778899; /* 浅一点的同色系，可根据实际调整 */
+}
+
+/* 其他原有样式保留（以下内容与标题无关，可直接复用你之前的代码） */
 content #write p {
   word-spacing: 0.05rem;
 }
+/* ... （你之前的其他 CSS 代码，如列表、引用、代码块等，全部保留） ... */
 
 content #write ol li {
   padding-left: 0.5rem;
@@ -47,14 +147,14 @@ content #write > h5.md-focus:before {
 #write h1,
 #write h2,
 #write h3 {
-  font-style: normal;
+  /* font-style: normal;*/
 }
 
-#write h1,
+#write h1
 #write h2 {
-  text-align: center;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  /* text-align: center; */
+  /* margin-top: 2rem; */
+  /* margin-bottom: 1rem; */
 }
 
 #write h1 {
@@ -66,12 +166,14 @@ content #write > h5.md-focus:before {
 }
 
 #write h2:after {
+  /*
   content: "";
   display: block;
   width: 6.25rem;
   height: 1px;
   margin: 0 auto;
   border-bottom: 1px solid #abc0d0;
+  */
 }
 
 #write h3 {
@@ -422,7 +524,7 @@ h6 code {
 code {
   background-color: rgba(34, 37, 38, 0.05);
   color: #e96900;
-  font-family: "Fira Code", Consolas, "Lucida Console", "Courier", monospace, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Hack", "Microsoft YaHei","Fira Code", Consolas, "Lucida Console", "Courier", monospace, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1rem;
   font-weight: 500;
   margin: 0 2px;
@@ -462,7 +564,7 @@ a img {
 
 /* code fences */
 .md-fences {
-  font-family: "Fira Code", Consolas, "Lucida Console", "Courier", monospace, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Fira Code", Hack, "Microsoft YaHei", "Courier", monospace, "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #222526;
   padding-top: 6px;
   padding-bottom: 6px;
@@ -887,7 +989,7 @@ a img {
 
 /** source code mode */
 #typora-source {
-  font-family: "Fira Code", Consolas, "Lucida Console", "Courier", monospace, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Fira Code", Hack, "Lucida Console", "Courier",  "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #6a6a6a;
 }
 
