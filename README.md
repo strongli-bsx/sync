@@ -1,1 +1,1 @@
-Some cfg to sync.
+# Some cfg to sync.
