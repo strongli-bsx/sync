@@ -27,7 +27,6 @@ body{
 	margin:2.54cm 0; /*上下/左右 边距，参考了word的默认边距*/
 }
 
-
 #write p{
 	text-align:justify;
 }
@@ -48,19 +47,20 @@ blockquote{
 h1 {
 	text-align:center;
     font-size:18pt;
-    /*page-break-before:always!important;*/
+    /* page-break-before:always!important; */
 }
 h2 {
 	font-family:仿宋;
-	text-align:center;
+	text-align:left;
 	font-size:16pt;
+	/* page-break-before:always */
 }
 h3 {
 	font-family:黑体;
 	font-size:14pt;
 }
 h4 {
-	text-align:center;
+	text-align:left;
 	font-family:楷体;
 	font-size:14pt;
 }
@@ -74,26 +74,29 @@ h4 {
 .md-toc-h4 {
 	font-family:楷体;
 }
-/* 三线表 */
 #write table{
-	border-top: 1.5pt solid;
-	border-bottom: 1.5pt solid;
-	font-family:宋体;
-	/*font-size:7.875pt;*/
-	font-size:10.5pt;
+	border-top: 1pt solid;
+	border-bottom: 1pt solid;
+	border-collapse: collapse;
+	font-family:楷体;
+	font-size:12 pt;
 	text-align:center;
     page-break-inside:avoid!important;
 }
-#write table td{
-	padding:2px;
+#write table td,
+#write table th { /* 同时给td和th加样式，表头不再空白 */
+	padding:8px; /* 增大内边距，文字不贴边 */
+	border: 1pt solid #000;
+	font-family:楷体; /* 表头文字强制楷体 */
+	color: #000; /* 强制文字黑色，避免和背景融合 */
 }
 #write table tr{
-	/* padding:3px; */
+	/* tr无padding，注释保留即可 */
 }
-#write thead{
-	border-bottom: 0.75pt solid;
-	font-family:黑体;
-	font-size:10.5pt;
+#write thead th { /* 精准控制表头单元格，而非thead容器 */
+	font-size:14pt; /* 去掉空格，修正语法错误 */
+	font-weight: bold; /* 表头加粗，内容更明显 */
+	background-color: #f5f5f5; /* 浅灰背景，区分表头和内容，避免视觉空白 */
 }
 /* @media print{
 	img{
@@ -152,7 +155,7 @@ span.md-fn-count::after{
 }
 /* 以下开始为自动编号 */
 #write{
-    counter-reset: tableHead imgHead write-h2 write-h3 write-h4!important;/*修复缺失上级标题时无法递增*/
+    counter-reset: tableHead imgHead write-h1 write-h2 write-h3 write-h4!important;/*修复缺失上级标题时无法递增*/
 }
 /* 编辑器内标题-重置 */
 #write h1 {
@@ -165,29 +168,33 @@ span.md-fn-count::after{
     counter-reset: write-h4;
 }
 /* 表格自动编号 */
-#write figure:after{
-	counter-increment: tableHead;
-	content: "表" counter(tableHead) " ";
-	text-align:center;
-	width:100%;
-	display:inline-block;
-}
+/* #write figure:after{ */
+	/* counter-increment: tableHead; */
+	/* content: "表" counter(tableHead) " "; */
+	/* text-align:center; */
+	/* width:100%; */
+	/* display:inline-block; */
+/* } */
 /* 图片自动编号，导出PDF时暂时无法显示 */
-#write .md-image:after{
-	counter-increment: imgHead;
-	content: "图" counter(imgHead) attr(alt) " " !important;
-	text-align:center;
-	width:100%;
-	display:inline-block;
-}
+/* #write .md-image:after{ */
+	/* counter-increment: imgHead; */
+	/* content: "图" counter(imgHead) attr(alt) " " !important; */
+	/* text-align:center; */
+	/* width:100%; */
+	/* display:inline-block; */
+/* } */
 /* 编辑器内标题-显示 */
+#write h1:before {
+    counter-increment: write-h1;
+    content: counter(write-h1, cjk-ideographic) "、";
+}
 #write h2:before {
     counter-increment: write-h2;
-    content: counter(write-h2, cjk-ideographic) "、";
+    content: counter(write-h1, decimal) "." counter(write-h2, decimal) " ";
 }
 #write h3:before {
     counter-increment: write-h3;
-    content: "（" counter(write-h3, cjk-ideographic) "）";
+    content: counter(write-h3, decimal) ". " ;
 }
 #write h4:before {
     counter-increment: write-h4;
@@ -232,19 +239,19 @@ span.md-fn-count::after{
 .md-toc-content .md-toc-h5 {
     display: none;
 }
-/* 目录标题-显示*/
-.md-toc-content .md-toc-h2:before {
-    counter-increment: toc-h2;
-    content: counter(toc-h2, cjk-ideographic) "、";
-}
-.md-toc-content .md-toc-h3:before {
-    counter-increment: toc-h3;
-    content: "（" counter(toc-h3, cjk-ideographic) "）";
-}
-.md-toc-content .md-toc-h4:before {
-    counter-increment: toc-h4;
-    content: counter(toc-h4, decimal) ". ";
-}
+/* 目录标题-显示 */
+/* .md-toc-content .md-toc-h2:before { */
+    /* counter-increment: toc-h2; */
+    /* content: counter(toc-h2, cjk-ideographic) "、"; */
+/* } */
+/* .md-toc-content .md-toc-h3:before { */
+    /* counter-increment: toc-h3; */
+    /* content: "（" counter(toc-h3, cjk-ideographic) "）"; */
+/* } */
+/* .md-toc-content .md-toc-h4:before { */
+    /* counter-increment: toc-h4; */
+    /* content: counter(toc-h4, decimal) ". "; */
+/* } */
 /* 大纲标题 -重置*/
 .sidebar-content{
     counter-reset: outline-h2 outline-h3 outline-h4;/*修复缺失上级标题时无法递增*/
@@ -258,19 +265,19 @@ span.md-fn-count::after{
 .sidebar-content .outline-h3 {
     counter-reset: outline-h4;
 }
-/* 大纲标题 -显示*/
-.sidebar-content .outline-h2 .outline-label:before {
-    counter-increment: outline-h2;
-    content: counter(outline-h2, cjk-ideographic) "、";
-}
-.sidebar-content .outline-h3 .outline-label:before {
-    counter-increment: outline-h3;
-    content: "（" counter(outline-h3, cjk-ideographic) "）";
-}
-.sidebar-content .outline-h4 .outline-label:before {
-    counter-increment: outline-h4;
-    content: counter(outline-h4, decimal) ". ";
-}
+/* 大纲标题 -显示 */
+/* .sidebar-content .outline-h2 .outline-label:before { */
+    /* counter-increment: outline-h2; */
+    /* content: counter(outline-h2, cjk-ideographic) "、"; */
+/* } */
+/* .sidebar-content .outline-h3 .outline-label:before { */
+    /* counter-increment: outline-h3; */
+    /* content: "（" counter(outline-h3, cjk-ideographic) "）"; */
+/* } */
+/* .sidebar-content .outline-h4 .outline-label:before { */
+    /* counter-increment: outline-h4; */
+    /* content: counter(outline-h4, decimal) ". "; */
+/* } */
 
 /* 代码块样式 */
 /*基准样式来自 https://support.typora.io/Code-Block-Styles/ */

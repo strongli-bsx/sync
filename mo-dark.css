@@ -13,8 +13,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* 内容区基础样式（保留原有，确保整体布局） */
-content #write {
+/* 内容区基础样式（修复选择器，Typora 内容区核心选择器为 #write） */
+#write {
   background-color: #181a1b;
   max-width: 90%;
   margin: 0 auto;
@@ -23,7 +23,7 @@ content #write {
 
 /* 一级标题：居中、同正文色文字、同色短下划线（短） */
 #write h1 {
-  font-size: 2.5rem; /* 可按需调整大小 */
+  font-size: 2.5rem; /* 保留预期字号，删除重复覆盖的 3rem */
   font-weight: normal;
   text-align: center;
   color: #abc0d0; /* 与正文同色 */
@@ -31,25 +31,27 @@ content #write {
   margin: 2rem auto 1rem;
   width: fit-content;
 }
-#write h1::after {
+/* 修复注释嵌套问题，删除内层注释符号 */
+/* #write h1::after {
   content: "";
   position: absolute;
   left: 50%;
   bottom: -5px;
   transform: translateX(-50%);
-  width: 300px; /* 短下划线 */
+  width: 300px; 短下划线
   height: 2px;
-  background-color: #abc0d0; /* 与文字同色下划线 */
-}
+  background-color: #abc0d0; 与文字同色下划线
+} */
 
 /* 二级标题：左侧同正文色# + 同色文字、同色长下划线贯穿 */
 #write h2 {
-  font-size: 1.8rem;
+  font-size: 1.8rem; /* 保留预期字号，删除重复覆盖的 2.4rem */
   font-weight: normal;
   color: #abc0d0; /* 与正文同色 */
   position: relative;
   padding-left: 0rem; /* 给#符号留空间 */
   margin: 1.5rem 0;
+  overflow: hidden; /* 防止下划线溢出内容区 */
 }
 
 #write h2::after {
@@ -57,15 +59,14 @@ content #write {
   position: absolute;
   left: 0; /* 从标题最左侧开始 */
   bottom: 0; /* 与标题底部对齐 */
-  width: 1000px; /* 固定下划线长度为1000px */
+  width: 100%; /* 替换 1000px，适配响应式宽度 */
   height: 2px;
   background-color: #778899; /* 同色下划线 */
-  /* 移除right属性，避免与固定宽度冲突 */
 }
 
 /* 三级标题：左侧同正文色竖线 + 同色文字 */
 #write h3 {
-  font-size: 1.5rem;
+  font-size: 1.5rem; /* 保留预期字号，删除重复覆盖的 1.8rem */
   font-weight: normal;
   color: #abc0d0; /* 与正文同色 */
   position: relative;
@@ -117,24 +118,25 @@ content #write {
   color: #778899; /* 浅一点的同色系，可根据实际调整 */
 }
 
-/* 其他原有样式保留（以下内容与标题无关，可直接复用你之前的代码） */
-content #write p {
+/* 段落样式（修复选择器，删除无效的 content 标签） */
+#write p {
   word-spacing: 0.05rem;
 }
-/* ... （你之前的其他 CSS 代码，如列表、引用、代码块等，全部保留） ... */
 
-content #write ol li {
+/* 列表样式（修复选择器） */
+#write ol li {
   padding-left: 0.5rem;
 }
 
-content #write > h1:first-child {
+#write > h1:first-child {
   font-weight: normal;
 }
 
-content #write > h5.md-focus:before {
+#write > h5.md-focus:before {
   top: 2px;
 }
 
+/* 选中样式 */
 ::-moz-selection {
   background-color: #67769660;
 }
@@ -143,50 +145,22 @@ content #write > h5.md-focus:before {
   background-color: #67769660;
 }
 
-/* h1-h3 */
+/* 修复分组选择器缺失的逗号 */
 #write h1,
-#write h2,
-#write h3 {
-  /* font-style: normal;*/
-}
-
-#write h1
 #write h2 {
+  /* 如需启用居中/边距，取消注释即可 */
   /* text-align: center; */
   /* margin-top: 2rem; */
   /* margin-bottom: 1rem; */
 }
 
-#write h1 {
-  font-size: 3rem;
-}
-
-#write h2 {
-  font-size: 2.4rem;
-}
-
-#write h2:after {
-  /*
-  content: "";
-  display: block;
-  width: 6.25rem;
-  height: 1px;
-  margin: 0 auto;
-  border-bottom: 1px solid #abc0d0;
-  */
-}
-
-#write h3 {
-  font-size: 1.8rem;
-}
-
-/* paragraph */
+/* 段落基础样式 */
 p {
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
-/* ul ol */
+/* 列表基础样式 */
 ul,
 ol {
   padding-left: 1.75rem;
@@ -202,7 +176,7 @@ ol:last-child {
   margin-bottom: 0;
 }
 
-/* blockquote */
+/* 块引用 */
 blockquote {
   padding: 0.5rem 1rem;
   border-left: 8px solid #2f845e;
@@ -210,14 +184,14 @@ blockquote {
   border-radius: 4px;
 }
 
-/* horizontal line */
+/* 水平线 */
 hr {
   margin-top: 2rem;
   margin-bottom: 2rem;
   border-top: 2px dashed #abb2bf;
 }
 
-/* table */
+/* 表格样式 */
 .md-table-fig .md-table {
   border: 1px solid #2f845e;
   border-radius: 6px;
@@ -308,7 +282,7 @@ hr {
   background-color: #3e4249;
 }
 
-/* yaml front matter */
+/* yaml 前置元数据 */
 #write pre.md-meta-block {
   background: #222526;
   color: #86a5c3;
@@ -322,12 +296,12 @@ hr {
   margin-bottom: 2rem;
 }
 
-/* table of contents */
+/* 目录 */
 .md-toc {
   margin-bottom: 1.25rem;
 }
 
-/* task list */
+/* 任务列表 */
 .md-task-list-item > input::before {
   content: "";
   position: absolute;
@@ -373,12 +347,12 @@ hr {
   color: #999;
 }
 
-/* footnote */
+/* 脚注 */
 .footnotes {
   font-size: 1rem;
 }
 
-/* math,html block common */
+/* 数学公式/HTML 块 */
 .mathjax-block,
 .md-htmlblock {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -395,16 +369,8 @@ hr {
 }
 
 .mathjax-block:hover .md-rawblock-container,
-.mathjax-block:hover .md-rawblock-tooltip,
-.md-htmlblock:hover .md-rawblock-container,
-.md-htmlblock:hover .md-rawblock-tooltip {
-  background-color: #222526;
-  -webkit-animation: showRawBlockTooltip 0s linear;
-          animation: showRawBlockTooltip 0s linear;
-}
-
-.mathjax-block:hover .md-rawblock-container,
 .md-htmlblock:hover .md-rawblock-container {
+  background-color: #222526;
   border-radius: 6px 0 6px 6px;
 }
 
@@ -416,8 +382,6 @@ hr {
 .mathjax-block .md-rawblock-tooltip,
 .md-htmlblock .md-rawblock-tooltip {
   background-color: #222526;
-  -webkit-animation: showRawBlockTooltip 0s linear;
-          animation: showRawBlockTooltip 0s linear;
   border-radius: 4px 4px 0 0;
 }
 
@@ -460,6 +424,7 @@ hr {
   padding-bottom: 10px;
 }
 
+/* 聚焦模式 */
 .on-focus-mode .md-end-block:not(.md-focus):not(.md-focus-container) * {
   color: #585a5b !important;
 }
@@ -490,19 +455,19 @@ hr {
   color: #abc0d0;
 }
 
-/* strong */
+/* 加粗 */
 strong {
   background-color: inherit;
   color: #b5302e;
 }
 
-/* emphasis */
+/* 斜体 */
 em {
   background-color: inherit;
   color: #949415;
 }
 
-/* underline */
+/* 下划线 */
 u {
   background-color: inherit;
   color: inherit;
@@ -511,7 +476,7 @@ u {
   padding-bottom: 1px;
 }
 
-/* code */
+/* 行内代码 */
 h1 code,
 h2 code,
 h3 code,
@@ -532,13 +497,13 @@ code {
   border-radius: 4px;
 }
 
-/* strike */
+/* 删除线 */
 del {
   color: #999;
   text-decoration: line-through;
 }
 
-/* hightlight */
+/* 高亮 */
 mark {
   color: #282c34;
   font-weight: 500;
@@ -546,7 +511,7 @@ mark {
   border-radius: 2px;
 }
 
-/* hyperlink */
+/* 链接 */
 a {
   background-color: inherit;
   color: #2484c1;
@@ -562,7 +527,7 @@ a img {
   border: none;
 }
 
-/* code fences */
+/* 代码块 */
 .md-fences {
   font-family: "Fira Code", Hack, "Microsoft YaHei", "Courier", monospace, "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #222526;
@@ -600,7 +565,7 @@ a img {
   background-color: #3e4249;
 }
 
-/* code container */
+/* 代码编辑器容器 */
 .cm-s-inner {
   background-color: #222526;
 }
@@ -654,7 +619,7 @@ a img {
   background-color: #404859 !important;
 }
 
-/* code fences color */
+/* 代码语法高亮 */
 .cm-s-inner .cm-keyword {
   color: #c678dd !important;
 }
@@ -732,14 +697,16 @@ a img {
   color: #abb2bf !important;
 }
 
-/* scrollbar */
+/* 滚动条（补充 Firefox 兼容） */
 ::-webkit-scrollbar-thumb {
-  background: -webkit-gradient(linear, left bottom, right top, from(#41b782), to(#86d169)) !important;
   background: linear-gradient(to top right, #41b782, #86d169) !important;
   border-radius: 4px;
 }
+/* Firefox 滚动条兼容 */
+scrollbar-width: thin;
+scrollbar-color: #41b782 #181a1b;
 
-/* find dialog */
+/* 快速打开面板 */
 #typora-quick-open {
   background-color: #222526;
   color: #abc0d0;
@@ -753,7 +720,7 @@ a img {
   border-top: 1px solid rgba(171, 192, 208, 0.1) !important;
 }
 
-/* modal dialog */
+/* 模态对话框 */
 #common-dialog .modal-dialog .modal-content {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
           box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -766,7 +733,7 @@ a img {
   background-color: #3e4249 !important;
 }
 
-/* preferences */
+/* 偏好设置面板 */
 .ty-preferences {
   font-family: "Fira Code", Consolas, "Lucida Console", "Courier", monospace, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #282c34;
@@ -786,13 +753,13 @@ a img {
   background-color: #2f845e;
 }
 
-/* sidebar includes file-tree,articles and outline*/
+/* 侧边栏（文件树/大纲） */
 .html-for-mac #typora-sidebar {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
           box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-/* focus mode/typewriter mode notification  */
+/* 聚焦/打字机模式通知 */
 #md-notification {
   background-color: #222526 !important;
 }
@@ -801,7 +768,7 @@ a img {
   background-color: #3e4249 !important;
 }
 
-/* Unibody sidebar */
+/* 一体化侧边栏 */
 #top-titlebar,
 #top-titlebar * {
   color: inherit;
@@ -836,7 +803,7 @@ a img {
   color: #000;
 }
 
-/* sidebar */
+/* 侧边栏核心样式 */
 #typora-sidebar {
   background-color: #181a1b;
   border-right: 1px solid rgba(171, 192, 208, 0.1);
@@ -933,7 +900,7 @@ a img {
           box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-/* dropdown menu */
+/* 下拉菜单 */
 .dropdown-menu {
   background-color: #222526;
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -963,7 +930,7 @@ a img {
   border-color: #222526;
 }
 
-/* sidebar-files-menu,toc-dropmenu,suggest common */
+/* 侧边栏文件菜单/目录下拉菜单/自动补全 */
 #sidebar-files-menu,
 #toc-dropmenu,
 .auto-suggest-container {
@@ -977,7 +944,7 @@ a img {
   background-color: #3e4249 !important;
 }
 
-/* emoji,fences,word suggest */
+/* 表情/代码/文字补全 */
 .auto-suggest-container {
   padding-top: 4px;
   padding-bottom: 4px;
@@ -987,7 +954,7 @@ a img {
   background-color: #3e4249 !important;
 }
 
-/** source code mode */
+/* 源码模式 */
 #typora-source {
   font-family: "Fira Code", Hack, "Lucida Console", "Courier",  "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #6a6a6a;
@@ -1009,6 +976,7 @@ a img {
   background-color: #b5d6fc !important;
 }
 
+/* 文件列表辅助文字 */
 .typora-node .file-list-item-parent-loc,
 .typora-node .file-list-item-time,
 .typora-node .file-list-item-summary {
